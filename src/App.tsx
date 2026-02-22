@@ -1,6 +1,7 @@
 import { MapPin, Users, Zap, Copy, Check } from "lucide-react";
 import { useState } from "react";
-import ClaimDrawOverlay from "./components/ClaimDrawOverlay";
+import AuthCard from "./components/AuthCard";
+
 
 function App() {
   const [copied, setCopied] = useState(false);
@@ -42,6 +43,7 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <AuthCard />
 
         <div className="bg-white/10 backdrop-blur-md rounded-lg overflow-hidden border border-white/20 shadow-2xl">
           <div className="bg-gradient-to-r from-blue-800 to-blue-700 px-6 py-3 border-b border-white/20">
@@ -49,10 +51,12 @@ function App() {
               Live Server Map
             </h3>
           </div>
+          
           <div
             className="relative"
             style={{ height: "calc(100vh - 400px)", minHeight: "500px" }}
           >
+            
             <iframe
               src="https://map.mufticraft.store/"
               className="w-full h-full"

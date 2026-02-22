@@ -5,8 +5,7 @@
   const snap = (n) => Math.round(n / GRID) * GRID;
 
   // ===== API Config (NEW) =====
-  const API_URL = "https://api.mufticraft.store/api/claims";
-  const API_TOKEN = "CHANGE_ME_LONG_RANDOM_SECRET";
+const API_URL = "https://api.mufticraft.store/api/claims";
   const WORLD_NAME = "world"; // change if needed
 
   // ===== Targets =====
@@ -22,10 +21,18 @@
   root.appendChild(overlay);
 
   // Prevent browser weirdness when overlay captures events
-  overlay.addEventListener("pointerdown", (e) => e.preventDefault(), { passive: false });
-  overlay.addEventListener("pointermove", (e) => e.preventDefault(), { passive: false });
-  overlay.addEventListener("pointerup", (e) => e.preventDefault(), { passive: false });
-  overlay.addEventListener("contextmenu", (e) => e.preventDefault(), { passive: false }); // no right-click menu
+  overlay.addEventListener("pointerdown", (e) => e.preventDefault(), {
+    passive: false,
+  });
+  overlay.addEventListener("pointermove", (e) => e.preventDefault(), {
+    passive: false,
+  });
+  overlay.addEventListener("pointerup", (e) => e.preventDefault(), {
+    passive: false,
+  });
+  overlay.addEventListener("contextmenu", (e) => e.preventDefault(), {
+    passive: false,
+  }); // no right-click menu
 
   // ===== Canvas for yellow blocks =====
   const canvas = document.createElement("canvas");
@@ -195,11 +202,14 @@
   // ===== UI actions =====
   function updateButtons() {
     drawBtn.textContent = drawing ? "Draw ON" : "Draw OFF";
-    drawBtn.style.background = drawing ? "rgba(250, 204, 21, 0.95)" : "rgba(255,255,255,0.10)";
+    drawBtn.style.background = drawing
+      ? "rgba(250, 204, 21, 0.95)"
+      : "rgba(255,255,255,0.10)";
     drawBtn.style.color = drawing ? "#0b1b3a" : "white";
 
     modeBtn.textContent = mode === "paint" ? "Mode: Paint" : "Mode: Erase";
-    modeBtn.style.background = mode === "erase" ? "rgba(239, 68, 68, 0.95)" : "rgba(255,255,255,0.10)";
+    modeBtn.style.background =
+      mode === "erase" ? "rgba(239, 68, 68, 0.95)" : "rgba(255,255,255,0.10)";
     modeBtn.style.color = "white";
   }
 
@@ -219,7 +229,9 @@
   modeBtn.onclick = () => {
     mode = mode === "paint" ? "erase" : "paint";
     updateButtons();
-    setStatus(drawing ? `Draw ON (${mode}) — drag to ${mode}` : `Mode set to ${mode}`);
+    setStatus(
+      drawing ? `Draw ON (${mode}) — drag to ${mode}` : `Mode set to ${mode}`,
+    );
   };
 
   undoBtn.onclick = () => {
@@ -278,10 +290,14 @@
     const result = applyMode(bx, by, bz);
     redrawAll();
 
-    if (result === "painted") setStatus(`Painted (${bx}, ${bz}) blocks=${points.length}`);
-    else if (result === "erased") setStatus(`Erased (${bx}, ${bz}) blocks=${points.length}`);
-    else if (result === "already") setStatus(`Already painted (${bx}, ${bz}) blocks=${points.length}`);
-    else setStatus(`Nothing to erase at (${bx}, ${bz}) blocks=${points.length}`);
+    if (result === "painted")
+      setStatus(`Painted (${bx}, ${bz}) blocks=${points.length}`);
+    else if (result === "erased")
+      setStatus(`Erased (${bx}, ${bz}) blocks=${points.length}`);
+    else if (result === "already")
+      setStatus(`Already painted (${bx}, ${bz}) blocks=${points.length}`);
+    else
+      setStatus(`Nothing to erase at (${bx}, ${bz}) blocks=${points.length}`);
 
     lastPaintKey = key;
   });
@@ -295,7 +311,10 @@
     if (now - lastPaintAt < 16) return; // ~60fps
     lastPaintAt = now;
 
-    mapViewer.handleMapInteraction({ x: clientX, y: clientY }, { __muftiPaint: true });
+    mapViewer.handleMapInteraction(
+      { x: clientX, y: clientY },
+      { __muftiPaint: true },
+    );
   }
 
   // Pointer listeners on overlay (so BlueMap never receives them when Draw ON)
@@ -317,7 +336,7 @@
 
       paintAtClientXY(e.clientX, e.clientY);
     },
-    { capture: true, passive: false }
+    { capture: true, passive: false },
   );
 
   overlay.addEventListener(
@@ -326,7 +345,7 @@
       if (!painting) return;
       paintAtClientXY(e.clientX, e.clientY);
     },
-    { capture: true, passive: false }
+    { capture: true, passive: false },
   );
 
   function stopPaint() {
@@ -439,8 +458,10 @@
     const n = poly.length;
 
     const isCollinear = (a, b, c) => {
-      const abx = b.x - a.x, abz = b.z - a.z;
-      const bcx = c.x - b.x, bcz = c.z - b.z;
+      const abx = b.x - a.x,
+        abz = b.z - a.z;
+      const bcx = c.x - b.x,
+        bcz = c.z - b.z;
       return abx * bcz - abz * bcx === 0; // cross product == 0
     };
 
@@ -459,16 +480,13 @@
   async function submitClaimPolygon(verticesXZ) {
     const payload = {
       world: WORLD_NAME,
-      vertices: verticesXZ.map(v => ({ x: v.x, z: v.z })),
+      vertices: verticesXZ.map((v) => ({ x: v.x, z: v.z })),
     };
 
     setStatus("Submitting claim…");
     const res = await fetch(API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_TOKEN}`,
-      },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(payload),
     });
 
@@ -495,7 +513,9 @@
     const outline = extractOutlineVertices(cellSet);
 
     if (outline.length < 3) {
-      alert("Could not extract a valid outline. Try drawing a thicker border or closed shape.");
+      alert(
+        "Could not extract a valid outline. Try drawing a thicker border or closed shape.",
+      );
       return;
     }
 
@@ -507,5 +527,7 @@
   resize();
   setActive(false);
   updateButtons();
-  console.log("[mufticraft-draw] ready. Toggle Draw ON, choose Mode Paint/Erase, then drag. Submit sends polygon to API.");
+  console.log(
+    "[mufticraft-draw] ready. Toggle Draw ON, choose Mode Paint/Erase, then drag. Submit sends polygon to API.",
+  );
 })();

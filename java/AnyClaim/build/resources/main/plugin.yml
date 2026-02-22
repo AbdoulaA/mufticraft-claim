@@ -1,0 +1,13 @@
+name: MufticraftClaims
+version: 0.1.0
+main: com.mufticraft.claims.MufticraftClaimsPlugin
+api-version: "1.21"
+author: MuftiCraft
+commands:
+  claims:
+    description: Claims admin commands
+    usage: /claims reload
+permissions:
+  mufticraft.claims.bypass:
+    description: Allows bypassing claim protection
+    default: op

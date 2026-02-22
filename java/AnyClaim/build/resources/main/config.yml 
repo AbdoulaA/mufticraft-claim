@@ -1,0 +1,7 @@
+# How often to poll inbox
+inbox_poll_seconds: 5
+
+# Claims API configuration
+claims:
+  api_url: "https://api.mufticraft.store/api/claims"
+  api_token: "3f9c7e2b8a4d1f6c9e0b2a7d5c8f1e4b7a6d9c2e0f4b8a1c6d3e7f2a9b5c8d1"

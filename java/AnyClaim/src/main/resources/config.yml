@@ -1,0 +1,8 @@
+# Where the Node API drops JSON claim files
+inbox_dir: "/opt/minecraft/claims/inbox"
+
+# Where processed claim files are moved to (so inbox stays clean)
+processed_dir: "/opt/minecraft/claims/processed"
+
+# How often the plugin polls for new inbox files
+inbox_poll_seconds: 5
