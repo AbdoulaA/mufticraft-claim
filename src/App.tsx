@@ -43,7 +43,9 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <AuthCard />
+
+        
+  {/* <AuthCard /> */}
 
         <div className="bg-white/10 backdrop-blur-md rounded-lg overflow-hidden border border-white/20 shadow-2xl">
           <div className="bg-gradient-to-r from-blue-800 to-blue-700 px-6 py-3 border-b border-white/20">
